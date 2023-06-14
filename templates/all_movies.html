@@ -1,0 +1,30 @@
+@app.route("/movies")
+def all_movies():
+    """View all movies."""
+
+    movies = crud.get_movies()
+
+    return render_template("all_movies.html", movies=movies)
+
+    {% extends 'base.html' %}
+    {% block title %}All Movies{% endblock %}
+
+    {% block body %}
+    {% for movie in movies %}
+        <p>{{ movie }}</p>
+    {% endfor %}
+    {% endblock body %}
+
+    {% block body %}
+  <h1>All Movies</h1>
+
+  <ul>
+    {% for movie in movies %}
+      <li>
+        <a href="/movies/{{ movie.movie_id }}">
+          {{ movie.title }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

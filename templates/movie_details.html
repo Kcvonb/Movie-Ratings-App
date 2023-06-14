@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ movie.title }} - Details{% endblock %}
+
+{% block body %}
+<h1>{{ movie.title }}</h1>
+
+<p>
+  {{ movie.overview }}
+</p>
+
+<img src="{{ movie.poster_path }}">
+{% endblock %}
+
+@app.route("/movies/<movie_id>")
+    def show_movie(movie_id):
+        """Show details on a particular movie."""
+    
+        movie = crud.get_movie_by_id(movie_id)
+    
+        return render_template("movie_details.html", movie=movie)
