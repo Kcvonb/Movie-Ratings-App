@@ -18,18 +18,6 @@ model.db.create_all()
 with open('data/movies.json') as f:
     movie_data = json.loads(f.read())
 
-def create_app():
-    app = Flask(__name__)
-    app.config.from_object("project.config")
-
-    import project.models
-
-    with app.app_context():
-        db.create_all()
-
-    return app
-
-
 movies_in_db = []
 for Movie in movie_data:
     title, overview, poster_path = (
@@ -41,6 +29,9 @@ for Movie in movie_data:
 
     db_movie = crud.create_movie(title, overview, release_date, poster_path)
     movies_in_db.append(db_movie)
+
+model.db.session.add_all(movies_in_db)
+model.db.session.commit()   
 
 for n in range(10):
     email = f"user{n}@test.com"  
@@ -58,5 +49,3 @@ for n in range(10):
 
 model.db.session.commit()
 
-model.db.session.add_all(movies_in_db)
-model.db.session.commit()

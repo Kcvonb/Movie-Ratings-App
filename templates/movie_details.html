@@ -9,13 +9,21 @@
   {{ movie.overview }}
 </p>
 
+{% if session.get('user_email') %}
+<h2>Rate this movie</h2>
+<form action="/movies/{{ movie.movie_id }}/ratings" method="POST">
+  <p>
+    Rating:
+    <select name="rating">
+      <option value="">Select rating</option>
+      {% for num in range(6) %}
+        <option value="{{ num }}">{{ num }}</option>
+      {% endfor %}
+    </select>
+  </p>
+  <p><input type="submit"></p>
+</form>
+{% endif %}
 <img src="{{ movie.poster_path }}">
 {% endblock %}
 
-@app.route("/movies/<movie_id>")
-    def show_movie(movie_id):
-        """Show details on a particular movie."""
-    
-        movie = crud.get_movie_by_id(movie_id)
-    
-        return render_template("movie_details.html", movie=movie)
